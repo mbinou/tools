@@ -7,7 +7,6 @@ import { clamp, Num } from "../components/Num";
 import { Color } from "../components/Color";
 import { LocusSide, RotationParams, SidePanel } from "../components/SidePanel";
 
-// 共通パラメータ
 export type CommonParams = {
   fps: number; // 目標FPS（内部では requestAnimationFrame 優先）
   afterimage: number; // 0..1（背景の透過塗りで残像表現）
@@ -18,7 +17,6 @@ export type CommonParams = {
   grid: { show: boolean; color: string };
 };
 
-// デフォルト値
 const defaultCommon: CommonParams = {
   fps: 30,
   afterimage: 0.8,
@@ -133,7 +131,6 @@ export default function Page() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [w, h] = [640, 340];
 
-  // 共通 & 左右パラメータ
   const [common, setCommon] = useState<CommonParams>(defaultCommon);
   const [left, setLeft] = useState<LocusSide>(() =>
     defaultSide(70, 70, 1, -3, 0, 0)
@@ -161,7 +158,6 @@ export default function Page() {
     }
   };
 
-  // 描画ループ
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -289,15 +285,6 @@ export default function Page() {
     return () => cancelAnimationFrame(animId);
   }, [common, left, right, w, h]);
 
-  // 共有: エンコード (URLシェア用の超簡易版)
-  const paramsEncoded = useMemo(() => {
-    const payload = { common, left, right };
-    const str = JSON.stringify(payload);
-    return typeof window === "undefined"
-      ? ""
-      : btoa(unescape(encodeURIComponent(str)));
-  }, [common, left, right]);
-
   const applyExample = (key: string) => {
     const fn = EXAMPLES[key];
     if (!fn) return;
@@ -310,7 +297,6 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-neutral-900 text-neutral-100">
-      {/* ナビバー */}
       <div className="sticky top-0 z-10 bg-neutral-950/90 backdrop-blur border-b">
         <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
           <div className="font-bold tracking-wide">Poitune</div>
@@ -321,7 +307,6 @@ export default function Page() {
       </div>
 
       <main className="max-w-6xl mx-auto px-4 py-6 grid gap-6">
-        {/* ヘッダー */}
         <header className="flex items-end justify-between gap-4">
           <div>
             <h1 className="text-2xl font-semibold">Poitune</h1>
@@ -352,7 +337,6 @@ export default function Page() {
           </div>
         </header>
 
-        {/* タブ */}
         <div className="flex gap-2 text-sm">
           {(["general", "left", "right", "examples"] as const).map((t) => (
             <button
@@ -367,7 +351,6 @@ export default function Page() {
           ))}
         </div>
 
-        {/* キャンバス */}
         <div className="rounded-2xl border p-3 bg-black">
           <div className="border rounded-xl overflow-hidden bg-black">
             <canvas
@@ -377,20 +360,8 @@ export default function Page() {
               className="mx-auto block"
             />
           </div>
-          <div className="flex flex-wrap gap-3 items-center mt-3 text-xs">
-            <span className="opacity-75">URL共有:</span>
-            <input
-              className="px-2 py-1 rounded border bg-neutral-950 w-full sm:w-[520px]"
-              value={`${
-                typeof window !== "undefined" ? window.location.origin : ""
-              }/?p=${paramsEncoded}`}
-              readOnly
-              onFocus={(e) => e.currentTarget.select()}
-            />
-          </div>
         </div>
 
-        {/* パネル */}
         {activeTab === "general" && (
           <div className="grid md:grid-cols-2 gap-4">
             <Section title="共通設定">
