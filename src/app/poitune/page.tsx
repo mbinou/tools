@@ -5,46 +5,7 @@ import { Section } from "../components/Section";
 import { Toggle } from "../components/Toggle";
 import { clamp, Num } from "../components/Num";
 import { Color } from "../components/Color";
-import { SidePanel } from "../components/SidePanel";
-
-type RotationParams = {
-  radiusHand: number; // 手の軌道半径
-  radiusPoi: number; // ポイの軌道半径
-  omegaHand: number; // 角速度[rad/s]
-  omegaPoi: number; // 角速度[rad/s]
-  angleHand: number; // 初期角度[rad]
-  anglePoi: number; // 初期角度[rad]
-  originX: number; // 原点X（canvas座標）
-  originY: number; // 原点Y
-};
-
-type ObjectVisibility = {
-  origin: boolean;
-  hand: boolean;
-  poi: boolean;
-};
-
-type SegmentVisibility = {
-  arm: boolean; // 手→ポイの線
-  chain: boolean; // 原点→手 とか任意の線
-};
-
-type ObjectSize = {
-  origin: number; // 点のサイズ(px)
-  hand: number;
-  poi: number;
-};
-
-// 片側（Left / Right）
-export type LocusSide = {
-  objectVisible: ObjectVisibility;
-  objectSize: ObjectSize;
-  objectColor: { origin: string; hand: string; poi: string };
-  rotation: RotationParams;
-  segmentVisible: SegmentVisibility;
-  segmentSize: { arm: number; chain: number };
-  segmentColor: { arm: string; chain: string };
-};
+import { LocusSide, RotationParams, SidePanel } from "../components/SidePanel";
 
 // 共通パラメータ
 export type CommonParams = {

@@ -1,10 +1,46 @@
-import { LocusSide } from "../page";
 import { Color } from "./Color";
 import { Num } from "./Num";
 import { Section } from "./Section";
 import { Toggle } from "./Toggle";
 
-// const deg2rad = (d: number) => (d * Math.PI) / 180;
+export type RotationParams = {
+  radiusHand: number; // 手の軌道半径
+  radiusPoi: number; // ポイの軌道半径
+  omegaHand: number; // 角速度[rad/s]
+  omegaPoi: number; // 角速度[rad/s]
+  angleHand: number; // 初期角度[rad]
+  anglePoi: number; // 初期角度[rad]
+  originX: number; // 原点X（canvas座標）
+  originY: number; // 原点Y
+};
+
+type ObjectVisibility = {
+  origin: boolean;
+  hand: boolean;
+  poi: boolean;
+};
+
+type SegmentVisibility = {
+  arm: boolean; // 手→ポイの線
+  chain: boolean; // 原点→手 とか任意の線
+};
+
+type ObjectSize = {
+  origin: number; // 点のサイズ(px)
+  hand: number;
+  poi: number;
+};
+
+// 片側（Left / Right）
+export type LocusSide = {
+  objectVisible: ObjectVisibility;
+  objectSize: ObjectSize;
+  objectColor: { origin: string; hand: string; poi: string };
+  rotation: RotationParams;
+  segmentVisible: SegmentVisibility;
+  segmentSize: { arm: number; chain: number };
+  segmentColor: { arm: string; chain: string };
+};
 
 export const SidePanel = ({
   side,
